@@ -1,20 +1,20 @@
 package org.koreait.controllers.boards;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.MemberUtil;
 import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Controller
+@Controller("Controller2")
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController implements ScriptExceptionProcess {
@@ -22,24 +22,31 @@ public class BoardController implements ScriptExceptionProcess {
     private final MemberUtil memberUtil;
 
     @GetMapping("/write/{bId}")
-    public String write(@PathVariable String bId, Model model) {
+    public String write(@PathVariable("bId") String bId, @ModelAttribute  BoardForm form, Model model) {
+        commonProcess(bId, "write", model);
 
         return utils.tpl("board/write");
     }
 
     @GetMapping("/update/{seq}")
-    public String update(@PathVariable Long seq, Model model) {
+    public String update(@PathVariable("seq") Long seq, Model model) {
         return utils.tpl("board/update");
     }
 
     @PostMapping("/save")
-    public String save(Model model) {
+    public String save(@Valid BoardForm form, Errors errors, Model model) {
+        String mode = Objects.requireNonNullElse(form.getMode(), "write");
+        String bId = form.getBId();
 
-        return "redirect:/board/list/게시판ID";
+        if (errors.hasErrors()) {
+            return utils.tpl("board/" + mode);
+        }
+
+        return "redirect:/board/list/" + bId;
     }
 
     @GetMapping("/view/{seq}")
-    public String view(@PathVariable Long seq, Model model) {
+    public String view(@PathVariable("seq") Long seq, Model model) {
 
         return utils.tpl("board/view");
     }

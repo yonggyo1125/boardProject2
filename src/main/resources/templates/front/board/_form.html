@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="common">
+
+        <dl>
+            <dt>제목</dt>
+            <dd>
+                <input type="text" name="subject">
+            </dd>
+        </dl>
+        <dl>
+            <dt>작성자</dt>
+            <dd>
+                <input type="text" name="poster">
+            </dd>
+        </dl>
+        <dl>
+            <dt>내용</dt>
+            <dd>
+                <textarea name="content" id="content"></textarea>
+            </dd>
+        </dl>
+    </th:block>
+</html>
