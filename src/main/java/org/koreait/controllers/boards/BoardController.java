@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.koreait.commons.MemberUtil;
 import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
+import org.koreait.entities.BoardData;
+import org.koreait.models.board.BoardInfoService;
+import org.koreait.models.board.BoardSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,6 +23,8 @@ import java.util.Objects;
 public class BoardController implements ScriptExceptionProcess {
     private final Utils utils;
     private final MemberUtil memberUtil;
+    private final BoardSaveService saveService;
+    private final BoardInfoService infoService;
 
     @GetMapping("/write/{bId}")
     public String write(@PathVariable("bId") String bId, @ModelAttribute  BoardForm form, Model model) {
@@ -42,11 +47,17 @@ public class BoardController implements ScriptExceptionProcess {
             return utils.tpl("board/" + mode);
         }
 
+        saveService.save(form);
+
         return "redirect:/board/list/" + bId;
     }
 
     @GetMapping("/view/{seq}")
     public String view(@PathVariable("seq") Long seq, Model model) {
+
+        BoardData data = infoService.get(seq);
+
+        model.addAttribute("boardData", data);
 
         return utils.tpl("board/view");
     }
