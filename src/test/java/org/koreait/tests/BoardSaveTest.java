@@ -23,7 +23,7 @@ public class BoardSaveTest {
 
 
     @Test
-    @DisplayName("게시글 저장 테스트 - 성공시 /board/view/게시글번호 이동")
+    @DisplayName("게시글 저장 테스트 - 성공시 /board/list/게시글 아이디")
     void saveTest() throws Exception {
         String url = mockMvc.perform(post("/board/save")
                 .param("mode", "write")
@@ -33,7 +33,7 @@ public class BoardSaveTest {
                 .with(csrf())
         ).andReturn().getResponse().getRedirectedUrl();
 
-        assertTrue(url.contains("/board/view"));
+        assertTrue(url.contains("/board/list"));
 
 
     }
