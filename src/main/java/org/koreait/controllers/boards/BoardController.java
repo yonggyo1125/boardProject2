@@ -43,6 +43,8 @@ public class BoardController implements ScriptExceptionProcess {
         String mode = Objects.requireNonNullElse(form.getMode(), "write");
         String bId = form.getBId();
 
+        commonProcess(bId, mode, model);
+
         if (errors.hasErrors()) {
             return utils.tpl("board/" + mode);
         }
