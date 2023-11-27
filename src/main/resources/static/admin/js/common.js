@@ -1,4 +1,20 @@
 window.addEventListener("DOMContentLoaded", function() {
+    /* 체크박스 토글 처리 S */
+    const checkalls =document.getElementsByClassName("checkall");
+    for (const el of checkalls) {
+        el.addEventListener("click", function() {
+            const name = this.dataset.targetName;
+
+            const chks = document.getElementsByName(name);
+            for (const el of chks) {
+                el.checked = this.checked;
+            }
+
+        });
+    }
+    /* 체크박스 토클 처리 E */
+
+    /* 양식 처리 S */
     const formActions = document.getElementsByClassName("form-action");
     for (const el of formActions) {
         el.addEventListener("click", function() {
@@ -15,4 +31,5 @@ window.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+    /* 양식 처리 E */
 });
