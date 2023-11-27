@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ListData;
 import org.koreait.commons.ScriptExceptionProcess;
+import org.koreait.commons.constants.BoardAuthority;
 import org.koreait.commons.menus.Menu;
 import org.koreait.entities.Board;
 import org.koreait.models.board.config.BoardConfigInfoService;
@@ -76,5 +77,7 @@ public class BoardController implements ScriptExceptionProcess {
         model.addAttribute("menuCode", "board");
         model.addAttribute("submenus", Menu.gets("board"));
         model.addAttribute("subMenuCode", Menu.getSubMenuCode(request));
+
+        model.addAttribute("authorities", BoardAuthority.getList());
     }
 }
