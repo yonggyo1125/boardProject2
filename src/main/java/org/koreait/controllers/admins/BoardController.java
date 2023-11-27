@@ -46,7 +46,7 @@ public class BoardController implements ScriptExceptionProcess {
     }
 
     @GetMapping("/edit/{bId}")
-    public String update(@PathVariable String bId, Model model) {
+    public String update(@PathVariable("bId") String bId, Model model) {
         commonProcess("edit", model);
 
         return "admin/board/edit";
