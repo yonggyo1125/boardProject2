@@ -47,6 +47,10 @@
                             <option th:if="${authorities != null && !authorities.isEmpty()}" th:each="auth : ${authorities}" th:value="${auth[0]}" th:text="${auth[1]}" th:selected="${auth[1] == item.authority.name()}"></option>
                         </select>
                     </td>
+                    <td>
+                        <a th:href="@{/admin/board/edit/{bId}(bId=*{bId})}" class="sbtn">설정 수정</a>
+                        <a th:href="@{/board/list/{bId}(bId=*{bId})}" target="_blank" class="sbtn blue">미리보기</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
