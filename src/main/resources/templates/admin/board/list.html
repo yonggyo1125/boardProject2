@@ -5,6 +5,36 @@
 <section layout:fragment="content">
     <h1 th:text="${pageTitle}"></h1>
 
-    <th:block th:replace="~{common/_pagination::pagination}"></th:block>
+    <form name="frmList" method="post" th:action="@{/admin/board}" target="ifrmProcess" autocomplete="off">
+        <table class="table-rows">
+            <thead>
+                <tr>
+                    <th width="40">
+                        <input type="checkbox" class="checkall" id="checkall">
+                        <label for="checkall"></label>
+                    </th>
+                    <th width="200">게시판 아이디</th>
+                    <th width="300">게시판 이름</th>
+                    <th width="150">사용 여부</th>
+                    <th width="200">글쓰기 권한</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${items == null || items.isEmpty()}">
+                    <td colspan="6" class="no_data">등록된 게시판이 없습니다.</td>
+                </tr>
+                <tr th:unless="${items == null || items.isEmpty()}"
+                    th:each="item : ${items}" th:object="${item}">
+                    <td>
+                        <input type="hidden" name="bId" th:value="*{bId}">
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <th:block th:if="${items != null && !items.isEmpty()}" th:replace="~{common/_pagination::pagination}"></th:block>
 </section>
 </html>
