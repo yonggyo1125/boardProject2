@@ -91,3 +91,8 @@ h2 { font-size: 18px; font-weight: bold; margin: 25px 0 10px; line-height: 1; }
 nav.submenus { background: #fff; box-shadow: 1px 1px 5px #cdced5; margin-bottom: 30px; display: flex; height: 60px; }
 nav.submenus a.on { background: #596b99; color: #fff; }
 nav.submenus a { line-height: 60px; padding: 0 40px; font-size: 18px; }
+
+/* 공통 페이징 */
+.pagination { text-align: center; margin: 20px 0; }
+.pagination a { display: inline-block; border: 1px solid #596b99; color: #596b99; padding: 1px 10px 3px; border-radius: 3px; }
+.pagination a.on { background: #596b99; color: #fff; }
