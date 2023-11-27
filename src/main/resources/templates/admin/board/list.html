@@ -25,10 +25,27 @@
                     <td colspan="6" class="no_data">등록된 게시판이 없습니다.</td>
                 </tr>
                 <tr th:unless="${items == null || items.isEmpty()}"
-                    th:each="item : ${items}" th:object="${item}">
+                    th:each="item, status : ${items}" th:object="${item}">
                     <td>
-                        <input type="hidden" name="bId" th:value="*{bId}">
+                        <input type="hidden" th:name="${'bId_' + status.index}" th:value="*{bId}">
+                        <input type="checkbox" name="idx" th:value="${status.index}"
+                               th:id="${'idx_' + status.index}">
+                        <label th:for="${'idx_' + status.index}"></label>
+                    </td>
+                    <td th:text="*{bId}"></td>
+                    <td>
+                        <input type="text" th:name="${'bName_' + status.index}" th:value="*{bName}">
+                    </td>
+                    <td>
+                        <select th:name="${'active_' + status.index}">
+                            <option value="true" th:selected="*{active}">사용</option>
+                            <option value="false" th:selected="*{!active}">미사용</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select th:name="${'authority_' + status.index}">
 
+                        </select>
                     </td>
                 </tr>
             </tbody>
