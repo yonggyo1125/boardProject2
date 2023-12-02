@@ -40,6 +40,5 @@ public class BoardFormValidator implements Validator, PasswordValidator {
                 }
             }
         }
-
     }
 }
