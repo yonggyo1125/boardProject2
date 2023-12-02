@@ -56,3 +56,13 @@ function fileUploadCallback(files) {
 function insertEditor(source) {
     editor.execute('insertImage', { source });
 }
+
+/**
+* 파일 삭제 후 콜백 처리
+*
+*/
+function fileDeleteCallback(fileId) {
+    const el = document.getElementById(`file_${fileId}`);
+    el.parentElement.removeChild(el);
+
+}
