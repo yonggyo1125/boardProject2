@@ -26,12 +26,16 @@ public class QBoardData extends EntityPathBase<BoardData> {
 
     public final QBoard board;
 
+    public final StringPath category = createString("category");
+
     public final StringPath content = createString("content");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final StringPath gid = createString("gid");
+
+    public final StringPath guestPw = createString("guestPw");
 
     public final QMember member;
 
