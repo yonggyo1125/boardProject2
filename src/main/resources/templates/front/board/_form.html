@@ -39,7 +39,18 @@
                 <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
 
                 <button type="button" th:text="#{이미지_추가}" class="upload_files" data-location="editor" data-image-only="true"></button>
+
+                <div class="uploaded_files" id="editor_files"></div>
             </dd>
         </dl>
+        <dl>
+            <dt th:text="#{파일첨부}">
+                <button type="button" th:text="#{파일_업로드}" class="upload_files" data-location="attach"></button>
+
+                <div class="uploaded_files" id="attach_files"></div>
+            </dt>
+        </dl>
+        <script th:replace="~{common/_file_tpl::tpl_editor}"></script>
+        <script th:replace="~{common/_file_tpl::tpl_file}"></script>
     </th:block>
 </html>
