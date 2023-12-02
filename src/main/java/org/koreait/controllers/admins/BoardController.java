@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller("adminBoardController")
@@ -36,6 +37,16 @@ public class BoardController implements ScriptExceptionProcess {
         model.addAttribute("pagination", data.getPagination());
 
         return "admin/board/list";
+    }
+
+    @PatchMapping
+    public String updateList(@RequestParam(name="idx", required = false) List<Integer> idxes, Model model) {
+
+
+        // 수정 완료시 부모창을 새로고침.
+        model.addAttribute("script", "parent.location.reload();");
+
+        return "common/_execute_script";
     }
 
     @GetMapping("/add")
