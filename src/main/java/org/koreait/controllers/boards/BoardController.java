@@ -12,6 +12,7 @@ import org.koreait.entities.BoardData;
 import org.koreait.models.board.BoardInfoService;
 import org.koreait.models.board.BoardSaveService;
 import org.koreait.models.board.config.BoardConfigInfoService;
+import org.koreait.models.board.config.BoardNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -34,6 +35,12 @@ public class BoardController implements ScriptExceptionProcess {
     @GetMapping("/write/{bId}")
     public String write(@PathVariable("bId") String bId, @ModelAttribute  BoardForm form, Model model) {
         commonProcess(bId, "write", model);
+
+        if (memberUtil.isLogin()) {
+            form.setPoster(memberUtil.getMember().getUserNm());
+        }
+
+        form.setBId(bId);
 
         return utils.tpl("board/write");
     }
@@ -85,8 +92,12 @@ public class BoardController implements ScriptExceptionProcess {
     private void commonProcess(String bId, String mode, Model model) {
 
         Board board = configInfoService.get(bId);
-        String bName = board.getBName();
 
+        if (board == null || (!board.isActive() && !memberUtil.isAdmin())) { // 등록되지 않거나 또는 미사용 중 게시판
+            throw new BoardNotFoundException();
+        }
+
+        String bName = board.getBName();
         String pageTitle = bName;
         if (mode.equals("write")) pageTitle = bName + " 작성";
         else if (mode.equals("update")) pageTitle = bName + " 수정";
