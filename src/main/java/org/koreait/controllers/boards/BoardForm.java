@@ -11,12 +11,14 @@ import java.util.UUID;
 public class BoardForm {
 
     private String mode = "write";
-    
+
     private Long seq;
 
     private String bId;
 
     private String gid = UUID.randomUUID().toString();
+
+    private String category;
 
     @NotBlank(message="제목을 입력하세요.")
     private String subject;

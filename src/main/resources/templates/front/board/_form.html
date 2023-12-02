@@ -38,7 +38,7 @@
                 <textarea name="content" id="content" th:field="*{content}"></textarea>
                 <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
 
-                <button type="button" th:text="#{이미지_추가}"></button>
+                <button type="button" th:text="#{이미지_추가}" class="upload_files" data-location="editor" data-image-only="true"></button>
             </dd>
         </dl>
     </th:block>
