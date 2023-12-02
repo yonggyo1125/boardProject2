@@ -4,18 +4,18 @@
     layout:decorate="~{admin/layouts/main}">
 <section layout:fragment="content">
     <h1>게시판 조회</h1>
-    <form name="frmSearch" method="get" th:action="@{/admin/board}" autocomplete="off">
+    <form name="frmSearch" method="get" th:action="@{/admin/board}" autocomplete="off" th:object="${boardSearch}">
         <table class="table-cols">
             <tr>
                 <th>키워드 검색</th>
                 <td colspan="3">
                     <div class="input_grp">
-                        <select name="sopt">
+                        <select name="sopt" th:field="*{sopt}">
                             <option value="ALL">통합검색</option>
                             <option value="bId">게시판 아이디</option>
                             <option value="bName">게시판 이름</option>
                         </select>
-                        <input type="text" name="skey">
+                        <input type="text" name="skey" th:field="*{skey}">
                     </div>
                 </td>
             </tr>
@@ -23,18 +23,18 @@
                 <th>사용여부</th>
                 <td>
                     <span>
-                        <input type="checkbox" name="active" value="true" id="active_true">
+                        <input type="checkbox" name="active" value="true" id="active_true" th:field="*{active}">
                         <label for="active_true">사용</label>
                     </span>
                     <span>
-                        <input type="checkbox" name="active" value="false" id="active_false">
+                        <input type="checkbox" name="active" value="false" id="active_false" th:field="*{active}">
                         <label for="active_false">미사용</label>
                     </span>
                 </td>
                 <th>글쓰기 권한</th>
                 <td>
                     <span th:each="auth : ${authorities}">
-                        <input type="checkbox" name="authority" th:value="${auth[0]}" th:id="${'auth_' + auth[0]}">
+                        <input type="checkbox" name="authority" th:value="${auth[0]}" th:id="${'auth_' + auth[0]}" th:field="*{authority}">
                         <label th:for="${'auth_' + auth[0]}" th:text="${auth[1]}"></label>
                     </span>
                 </td>
