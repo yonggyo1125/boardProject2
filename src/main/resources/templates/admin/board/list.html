@@ -3,8 +3,49 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{admin/layouts/main}">
 <section layout:fragment="content">
-    <h1 th:text="${pageTitle}"></h1>
+    <h1>게시판 조회</h1>
+    <form name="frmSearch" method="get" th:action="@{/admin/board}" autocomplete="off">
+        <table class="table-cols">
+            <tr>
+                <th>키워드 검색</th>
+                <td colspan="3">
+                    <div class="input_grp">
+                        <select name="sopt">
+                            <option value="ALL">통합검색</option>
+                            <option value="bId">게시판 아이디</option>
+                            <option value="bName">게시판 이름</option>
+                        </select>
+                        <input type="text" name="skey">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>사용여부</th>
+                <td>
+                    <span>
+                        <input type="checkbox" name="active" value="true" id="active_true">
+                        <label for="active_true">사용</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" name="active" value="false" id="active_false">
+                        <label for="active_false">미사용</label>
+                    </span>
+                </td>
+                <th>글쓰기 권한</th>
+                <td>
+                    <span th:each="auth : ${authorities}">
+                        <input type="checkbox" name="authority" th:value="${auth[0]}" th:id="${'auth_' + auth[0]}">
+                        <label th:for="${'auth_' + auth[0]}" th:text="${auth[1]}"></label>
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div class="search_btn">
+            <button type="submit">조회하기</button>
+        </div>
+    </form>
 
+    <h1 th:text="${pageTitle}"></h1>
     <form name="frmList" method="post" th:action="@{/admin/board}" target="ifrmProcess" autocomplete="off">
         <input type="hidden" name="_method" value="PATCH">
         <table class="table-rows">
@@ -45,7 +86,8 @@
                     </td>
                     <td>
                         <select th:name="${'authority_' + status.index}">
-                            <option th:if="${authorities != null && !authorities.isEmpty()}" th:each="auth : ${authorities}" th:value="${auth[0]}" th:text="${auth[1]}" th:selected="${auth[1] == item.authority.name()}"></option>
+
+                            <option th:if="${authorities != null && !authorities.isEmpty()}" th:each="auth : ${authorities}" th:value="${auth[0]}" th:text="${auth[1]}" th:selected="${auth[0] == item.authority.name()}"></option>
                         </select>
                     </td>
                     <td>
