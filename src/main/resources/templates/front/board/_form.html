@@ -1,26 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <th:block th:fragment="common" th:object="${boardForm}">
+        <input type="hidden" name="gid" th:field="*{gid}">
+        <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
 
         <dl>
-            <dt>제목</dt>
+            <dt th:text="#{제목}"></dt>
             <dd>
                 <input type="text" name="subject" th:field="*{subject}">
                 <div class="error" th:each="err : ${#fields.errors('subject')}" th:text="${err}"></div>
             </dd>
         </dl>
         <dl>
-            <dt>작성자</dt>
+            <dt th:text="#{작성자}"></dt>
             <dd>
                 <input type="text" name="poster" th:field="*{poster}">
                 <div class="error" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
             </dd>
         </dl>
+        <dl sec:authorize="isAnonymous()">
+            <dt th:text="#{비밀번호}"></dt>
+            <dd>
+                <input type="password" name="guestPw" th:placeholder="#{게시글_수정_삭제시_비밀번호}">
+            </dd>
+        </dl>
+        <dl sec:authorize="hasAuthority('ADMIN')">
+            <dt th:text="#{공지사항}"></dt>
+            <dd>
+                <input type="checkbox" name="notice" value="true" id="notice_true">
+                <label for="notice_true" th:text="#{적용하기}"></label>
+            </dd>
+        </dl>
         <dl>
-            <dt>내용</dt>
+            <dt th:text="#{내용}"></dt>
             <dd>
                 <textarea name="content" id="content" th:field="*{content}"></textarea>
                 <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
+
+                <button type="button" th:text="#{이미지_추가}"></button>
             </dd>
         </dl>
     </th:block>
