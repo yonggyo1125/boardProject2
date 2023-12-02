@@ -44,11 +44,12 @@
             </dd>
         </dl>
         <dl>
-            <dt th:text="#{파일첨부}">
+            <dt th:text="#{파일첨부}"></dt>
+            <dd>
                 <button type="button" th:text="#{파일_업로드}" class="upload_files" data-location="attach"></button>
 
                 <div class="uploaded_files" id="attach_files"></div>
-            </dt>
+            </dd>
         </dl>
         <script th:replace="~{common/_file_tpl::tpl_editor}"></script>
         <script th:replace="~{common/_file_tpl::tpl_file}"></script>

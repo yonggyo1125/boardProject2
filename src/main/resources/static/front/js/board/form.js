@@ -31,7 +31,7 @@ function fileUploadCallback(files) {
         let targetEl = loc == 'editor' ? editorEl : attachEl;
 
         if (loc == 'editor') { // 에디터
-            editor.execute('insertImage', { source: file.fileUrl});
+            insertEditor(file.fileUrl);
         }
 
         html = html.replace(/\[id\]/g, file.id)
@@ -42,5 +42,17 @@ function fileUploadCallback(files) {
         const span = dom.querySelector("span");
         targetEl.appendChild(span);
 
+        const el = span.querySelector(".insert_editor");
+        if (el) {
+            el.addEventListener("click", (e) => insertEditor(e.currentTarget.dataset.url));
+        }
     }
+}
+
+/**
+* 이미지 본문 추가
+*
+*/
+function insertEditor(source) {
+    editor.execute('insertImage', { source });
 }
