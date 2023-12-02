@@ -5,9 +5,13 @@
         <table class="table-cols">
             <tr>
                 <th>게시판 아이디</th>
-                <td>
+                <td th:if="*{mode != 'edit'}">
                     <input type="text" name="bId" th:field="*{bId}">
                     <div class="errors" th:each="err : ${#fields.errors('bId')}" th:text="${err}"></div>
+                </td>
+                <td th:if="*{mode == 'edit'}">
+                    <input type="hidden" name="bId" th:field="*{bId}">
+                    <th:block th:text="*{bId}"></th:block>
                 </td>
             </tr>
             <tr>

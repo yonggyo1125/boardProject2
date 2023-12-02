@@ -74,6 +74,9 @@ public class BoardController implements ScriptExceptionProcess {
     public String update(@PathVariable("bId") String bId, Model model) {
         commonProcess("edit", model);
 
+        BoardConfigForm form = infoService.getForm(bId);
+        model.addAttribute("boardConfigForm", form);
+
         return "admin/board/edit";
     }
 
