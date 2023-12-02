@@ -17,12 +17,30 @@ function fileUploadCallback(files) {
         return;
     }
 
+    const tpl1 = document.getElementById("tpl_editor").innerHTML;
+    const tpl2 = document.getElementById("tpl_file").innerHTML;
+
+    const editorEl = document.getElementById("editor_files");
+    const attachEl = document.getElementById("attach_files");
+
+    const domParser = new DOMParser();
+
     for (const file of files) {
-        if (file.location == 'editor') { // 에디터
+        const loc = file.location;
+        let html = loc == 'editor' ? tpl1 : tpl2;
+        let targetEl = loc == 'editor' ? editorEl : attachEl;
+
+        if (loc == 'editor') { // 에디터
             editor.execute('insertImage', { source: file.fileUrl});
-
-        } else { // 첨부 파일
-
         }
+
+        html = html.replace(/\[id\]/g, file.id)
+                    .replace(/\[fileName\]/g, file.fileName)
+                    .replace(/\[orgUrl\]/g, file.fileUrl);
+
+        const dom = domParser.parseFromString(html, "text/html");
+        const span = dom.querySelector("span");
+        targetEl.appendChild(span);
+
     }
 }
