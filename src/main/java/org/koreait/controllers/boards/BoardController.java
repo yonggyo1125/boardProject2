@@ -98,11 +98,11 @@ public class BoardController implements ScriptExceptionProcess {
             BoardAuthority authority = board.getAuthority();
             if (!memberUtil.isAdmin() && !memberUtil.isLogin()
                     && authority == BoardAuthority.MEMBER) { // 회원 전용
-                throw new AlertBackException(Utils.getMessage("Board.memberOnly", "error"));
+                throw new AlertBackException(Utils.getMessage("MemberOnly.board", "error"));
             }
 
             if (authority == BoardAuthority.ADMIN && !memberUtil.isAdmin()) { // 관리자 전용
-                throw new AlertBackException(Utils.getMessage("Board.adminOnly", "error"));
+                throw new AlertBackException(Utils.getMessage("AdminOnly.board", "error"));
             }
         }
         /* 글쓰기, 수정시 권한 체크 E */
