@@ -60,11 +60,12 @@ public class BoardController implements ScriptExceptionProcess {
 
         commonProcess(bId, mode, model);
 
+        saveService.save(form, errors);
+
         if (errors.hasErrors()) {
             return utils.tpl("board/" + mode);
         }
 
-        saveService.save(form);
 
         return "redirect:/board/list/" + bId;
     }
