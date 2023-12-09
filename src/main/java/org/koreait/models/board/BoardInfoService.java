@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ListData;
+import org.koreait.commons.MemberUtil;
 import org.koreait.commons.Pagination;
 import org.koreait.commons.Utils;
 import org.koreait.controllers.boards.BoardDataSearch;
@@ -33,6 +34,7 @@ public class BoardInfoService {
     private final FileInfoService fileInfoService;
     private final HttpServletRequest request;
     private final EntityManager em;
+    private final MemberUtil memberUtill;
 
     public BoardData get(Long seq) {
 
@@ -126,5 +128,22 @@ public class BoardInfoService {
 
         data.setEditorImages(editorImages);
         data.setAttachFiles(attachFiles);
+    }
+
+    public boolean isMine(Long seq) {
+        if (memberUtill.isAdmin()) { // 관리자는 수정, 삭제 모두 가능
+            return true;
+        }
+
+        BoardData data = get(seq);
+        if (data.getMember() != null
+                && (memberUtill.isLogin()
+                    || data.getMember().getUserNo() == memberUtill.getMember().getUserNo())
+        ) { // 회원 등록 게시물이만 직접 작성한 게시글인 경우
+            return true;
+        }
+
+
+        return false;
     }
 }

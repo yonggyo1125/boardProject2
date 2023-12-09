@@ -68,6 +68,7 @@ public class BoardController implements ScriptExceptionProcess {
 
         commonProcess(bId, mode, model);
 
+
         saveService.save(form, errors);
 
         if (errors.hasErrors()) {
