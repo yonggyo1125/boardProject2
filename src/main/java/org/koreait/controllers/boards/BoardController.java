@@ -130,7 +130,7 @@ public class BoardController implements ScriptExceptionProcess {
         ListData<BoardData> data = infoService.getList(search);
         model.addAttribute("items", data.getContent());
         model.addAttribute("pagination", data.getPagination());
-        
+
         return utils.tpl("board/list");
     }
 
@@ -207,6 +207,7 @@ public class BoardController implements ScriptExceptionProcess {
         model.addAttribute("addCommonScript", addCommonScript);
         model.addAttribute("addScript", addScript);
         model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("board", board);
     }
 
     @ExceptionHandler(RequiredPasswordCheckException.class)

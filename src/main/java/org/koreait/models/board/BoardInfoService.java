@@ -102,6 +102,8 @@ public class BoardInfoService {
         PathBuilder pathBuilder = new PathBuilder(BoardData.class, "boardData");
         List<BoardData> items = new JPAQueryFactory(em)
                 .selectFrom(boardData)
+                .leftJoin(boardData.board)
+                .leftJoin(boardData.member)
                 .where(andBuilder)
                 .offset(offset)
                 .limit(limit)
