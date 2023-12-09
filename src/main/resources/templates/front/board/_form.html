@@ -33,7 +33,7 @@
             <dt th:text="#{비밀번호}"></dt>
             <dd>
                 <input type="password" name="guestPw" th:placeholder="#{게시글_수정_삭제시_비밀번호}">
-                <div class="error" th:each="err : ${#fields.errors('poster')}" th:text="${err}"></div>
+                <div class="error" th:each="err : ${#fields.errors('guestPw')}" th:text="${err}"></div>
             </dd>
         </dl>
         <dl sec:authorize="hasAuthority('ADMIN')">

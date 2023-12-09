@@ -20,13 +20,13 @@ public class BoardForm {
 
     private String category;
 
-    @NotBlank(message="제목을 입력하세요.")
+    @NotBlank
     private String subject;
 
-    @NotBlank(message="작성자를 입력하세요.")
+    @NotBlank
     private String poster;
 
-    @NotBlank(message="내용을 입력하세요.")
+    @NotBlank
     private String content;
 
     private boolean notice;
