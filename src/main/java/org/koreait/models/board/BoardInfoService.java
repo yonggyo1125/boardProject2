@@ -28,8 +28,8 @@ public class BoardInfoService {
     }
 
 
-    public ListData<BoardData> getList(BoardSearch search) {
-        
+    public ListData<BoardData> getList(BoardDataSearch search) {
+
     }
 
 
