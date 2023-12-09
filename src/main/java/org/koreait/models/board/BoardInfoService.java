@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ListData;
 import org.koreait.commons.MemberUtil;
@@ -16,6 +17,7 @@ import org.koreait.controllers.boards.BoardDataSearch;
 import org.koreait.controllers.boards.BoardForm;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.FileInfo;
+import org.koreait.entities.Member;
 import org.koreait.entities.QBoardData;
 import org.koreait.models.file.FileInfoService;
 import org.koreait.repositories.BoardDataRepository;
@@ -35,6 +37,7 @@ public class BoardInfoService {
     private final HttpServletRequest request;
     private final EntityManager em;
     private final MemberUtil memberUtill;
+    private final HttpSession session;
 
     public BoardData get(Long seq) {
 
@@ -136,11 +139,20 @@ public class BoardInfoService {
         }
 
         BoardData data = get(seq);
-        if (data.getMember() != null
-                && (memberUtill.isLogin()
-                    || data.getMember().getUserNo() == memberUtill.getMember().getUserNo())
-        ) { // 회원 등록 게시물이만 직접 작성한 게시글인 경우
-            return true;
+        if (data.getMember() != null) {
+         // 회원 등록 게시물이만 직접 작성한 게시글인 경우
+            Member boardMember = data.getMember();
+            Member member = memberUtill.getMember();
+
+            return memberUtill.isLogin() && boardMember.getUserNo() == member.getUserNo();
+        } else { // 비회원 게시글
+            // 세션에 chk_게시글번호 항목이 있으면 비번 검증 완료
+            String key = "chk_" + seq;
+            if (session.getAttribute(key) == null) { // 비회원 비밀번호 검증 X -> 검증 화면으로 이동
+                throw new RequiredPasswordCheckException();
+            } else { // 비회원 게시글 검증 성공시
+                return true;
+            }
         }
 
 

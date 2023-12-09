@@ -52,8 +52,12 @@ public class BoardController implements ScriptExceptionProcess {
 
     @GetMapping("/update/{seq}")
     public String update(@PathVariable("seq") Long seq, Model model) {
+        if (!infoService.isMine(seq)) { // 직접 작성한 게시글이 아닌 경우
+            throw new AlertBackException(Utils.getMessage("작성한_게시글만_수정할_수_있습니다.", "error"));
+        }
+
         BoardForm form = infoService.getForm(seq);
-        System.out.println(form);
+
         commonProcess(form.getBId(), "update", model);
 
         model.addAttribute("boardForm", form);
@@ -67,6 +71,13 @@ public class BoardController implements ScriptExceptionProcess {
         String bId = form.getBId();
 
         commonProcess(bId, mode, model);
+
+        if (mode.equals("update")) {
+            Long seq = form.getSeq();
+            if (!infoService.isMine(seq)) { // 직접 작성한 게시글이 아닌 경우
+                throw new AlertBackException(Utils.getMessage("작성한_게시글만_수정할_수_있습니다.", "error"));
+            }
+        }
 
 
         saveService.save(form, errors);
