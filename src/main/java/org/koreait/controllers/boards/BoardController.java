@@ -1,5 +1,6 @@
 package org.koreait.controllers.boards;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.MemberUtil;
@@ -7,9 +8,11 @@ import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
 import org.koreait.commons.constants.BoardAuthority;
 import org.koreait.commons.exceptions.AlertBackException;
+import org.koreait.commons.exceptions.AlertException;
 import org.koreait.entities.Board;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.FileInfo;
+import org.koreait.models.board.BoardDataNotFoundException;
 import org.koreait.models.board.BoardInfoService;
 import org.koreait.models.board.BoardSaveService;
 import org.koreait.models.board.RequiredPasswordCheckException;
@@ -120,8 +123,21 @@ public class BoardController implements ScriptExceptionProcess {
     }
 
     @PostMapping("/guest/password")
-    public String guestPasswordCheck(String password, Model model) {
+    public String guestPasswordCheck(String password, HttpSession session, Model model) {
 
+        Long seq = (Long)session.getAttribute("guest_seq");
+        if (seq == null) {
+            throw new BoardDataNotFoundException();
+        }
+
+        if (!infoService.checkGuestPassword(seq, password)) { // 비번 검증 실패시
+            throw new AlertException(Utils.getMessage("비밀번호가_일치하지_않습니다.", "error"));
+        }
+
+        // 검증 성공시
+        String key = "chk_" + seq;
+        session.setAttribute(key, true);
+        session.removeAttribute("guest_seq");
 
         model.addAttribute("script", "parent.location.reload()");
         return "common/_execute_script";
