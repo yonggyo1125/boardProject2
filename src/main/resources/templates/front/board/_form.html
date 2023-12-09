@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <th:block th:fragment="common" th:object="${boardForm}">
+        <input type="hidden" name="bId" th:field="*{bId}">
         <input type="hidden" name="gid" th:field="*{gid}">
         <div class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
 
