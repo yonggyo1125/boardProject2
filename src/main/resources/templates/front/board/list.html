@@ -4,7 +4,12 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content">
-
+    <h1>
+        <a th:href="@{/board/list/{bId}(bId=${board.bId})}" th:text="${board.bName}"></a>
+    </h1>
+    <nav th:if="${categories != null && !category.isEmpty()}">
+        <a th:each="category : ${categories}" th:href="@{/board/list/{bId}(bId=${board.bId}, category=${category})}" th:text="${category}"></a>
+    </nav>
     <ul>
         <li th:if="${items == null || items.isEmpty()}" th:text="#{조회된_게시글이_없습니다.}"></li>
         <li th:unless="${items == null || items.isEmpty()}"

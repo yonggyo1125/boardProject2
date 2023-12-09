@@ -76,19 +76,19 @@ public class BoardInfoService {
         if (StringUtils.hasText(skey)) {
             skey = skey.trim();
 
-            if (skey.equals("subject")) { // 제목 검색
+            if (sopt.equals("subject")) { // 제목 검색
                 andBuilder.and(boardData.subject.contains(skey));
 
-            } else if (skey.equals("content")) { // 내용 검색
+            } else if (sopt.equals("content")) { // 내용 검색
                 andBuilder.and(boardData.content.contains(skey));
 
-            } else if (skey.equals("subject_content")) { // 제목 + 내용 검색
+            } else if (sopt.equals("subject_content")) { // 제목 + 내용 검색
                 BooleanBuilder orBuilder = new BooleanBuilder();
                 orBuilder.or(boardData.subject.contains(skey))
                         .or(boardData.content.contains(skey));
 
                 andBuilder.and(orBuilder);
-            } else if (skey.equals("poster")) { // 작성자 + 아이디
+            } else if (sopt.equals("poster")) { // 작성자 + 아이디
                 BooleanBuilder orBuilder = new BooleanBuilder();
                 orBuilder.or(boardData.poster.contains(skey))
                         .or(boardData.member.email.contains(skey))

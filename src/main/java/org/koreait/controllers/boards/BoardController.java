@@ -126,6 +126,7 @@ public class BoardController implements ScriptExceptionProcess {
         commonProcess(bId, "list", model);
 
         search.setBId(bId);
+        System.out.println("search : " + search);
 
         ListData<BoardData> data = infoService.getList(search);
         model.addAttribute("items", data.getContent());
