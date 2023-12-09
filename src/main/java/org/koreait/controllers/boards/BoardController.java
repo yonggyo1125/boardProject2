@@ -9,10 +9,12 @@ import org.koreait.commons.constants.BoardAuthority;
 import org.koreait.commons.exceptions.AlertBackException;
 import org.koreait.entities.Board;
 import org.koreait.entities.BoardData;
+import org.koreait.entities.FileInfo;
 import org.koreait.models.board.BoardInfoService;
 import org.koreait.models.board.BoardSaveService;
 import org.koreait.models.board.config.BoardConfigInfoService;
 import org.koreait.models.board.config.BoardNotFoundException;
+import org.koreait.models.file.FileInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -33,6 +35,7 @@ public class BoardController implements ScriptExceptionProcess {
     private final BoardSaveService saveService;
     private final BoardInfoService infoService;
     private final BoardConfigInfoService configInfoService;
+    private final FileInfoService fileInfoService;
 
     @GetMapping("/write/{bId}")
     public String write(@PathVariable("bId") String bId, @ModelAttribute  BoardForm form, Model model) {
@@ -68,6 +71,12 @@ public class BoardController implements ScriptExceptionProcess {
         saveService.save(form, errors);
 
         if (errors.hasErrors()) {
+            String gid = form.getGid();
+            List<FileInfo> editorImages = fileInfoService.getListAll(gid, "editor");
+            List<FileInfo> attachFiles = fileInfoService.getListAll(gid, "attach");
+            form.setEditorImages(editorImages);
+            form.setAttachFiles(attachFiles);
+
             return utils.tpl("board/" + mode);
         }
 

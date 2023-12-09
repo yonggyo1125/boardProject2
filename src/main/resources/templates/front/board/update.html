@@ -4,7 +4,7 @@
       layout:decorate="~{front/layouts/main}">
 
 <main layout:fragment="content">
-    <form name="frmSave" th:action="@{/board/save}" autocomplete="off" th:object="${boardForm}">
+    <form name="frmSave" method="post" th:action="@{/board/save}" autocomplete="off" th:object="${boardForm}">
         <input type="hidden" name="mode" value="update">
         <input type="hidden" name="seq" th:value="*{seq}">
 
