@@ -112,8 +112,14 @@ public class BoardController implements ScriptExceptionProcess {
 
     @GetMapping("/delete/{seq}")
     public String delete(@PathVariable("seq") Long seq) {
+        if (!infoService.isMine(seq)) {
+            throw new AlertBackException(Utils.getMessage("작성한_게시글만_삭제_가능합니다.", "error"));
+        }
 
-        return "redirect:/board/list/게시판 ID";
+        BoardData data = infoService.get(seq);
+
+
+        return "redirect:/board/list/" + data.getBoard().getBId();
     }
 
     @GetMapping("/list/{bId}")
@@ -123,7 +129,7 @@ public class BoardController implements ScriptExceptionProcess {
     }
 
     @PostMapping("/guest/password")
-    public String guestPasswordCheck(String password, HttpSession session, Model model) {
+    public String guestPasswordCheck(@RequestParam("password") String password, HttpSession session, Model model) {
 
         Long seq = (Long)session.getAttribute("guest_seq");
         if (seq == null) {
