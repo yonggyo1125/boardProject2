@@ -50,7 +50,17 @@
 
                 <button type="button" th:text="#{이미지_추가}" class="upload_files" data-location="editor" data-image-only="true"></button>
 
-                <div class="uploaded_files" id="editor_files"></div>
+                <div class="uploaded_files" id="editor_files">
+                    <span th:if="*{editorImages != null}"
+                          th:each="file : *{editorImages}" th:object="${file}"
+                          class="file_items" th:id="*{'file_' + id}">
+                        <a th:href="@{/file/download/{id}(id=*{id})}" th:text="*{fileName}"></a>
+                        <i class="xi-arrow-top insert_editor" th:data-url="*{fileUrl}"></i>
+                        <a th:href="@{/file/delete/{id}(id=*{id})}" onclick="return confirm('정말 삭제하시겠습니까?');" target="ifrmProcess" class="remove">
+                            <i class="xi-close-min"></i>
+                        </a>
+                    </span>
+                </div>
             </dd>
         </dl>
         <dl>
@@ -58,7 +68,17 @@
             <dd>
                 <button type="button" th:text="#{파일_업로드}" class="upload_files" data-location="attach"></button>
 
-                <div class="uploaded_files" id="attach_files"></div>
+                <div class="uploaded_files" id="attach_files">
+                    <span th:if="*{attachFiles != null}"
+                          th:each="file : *{attachFiles}" th:object="${file}"
+                          class="file_items" th:id="*{'file_' + id}">
+                        <a th:href="@{/file/download/{id}(id=*{id})}" th:text="*{fileName}"></a>
+
+                        <a th:href="@{/file/delete/{id}(id=*{id})}" onclick="return confirm('정말 삭제하시겠습니까?');" target="ifrmProcess" class="remove">
+                            <i class="xi-close-min"></i>
+                        </a>
+                    </span>
+                </div>
             </dd>
         </dl>
         <script th:replace="~{common/_file_tpl::tpl_editor}"></script>

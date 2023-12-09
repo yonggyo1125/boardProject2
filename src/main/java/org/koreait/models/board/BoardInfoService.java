@@ -47,6 +47,7 @@ public class BoardInfoService {
         BoardData data = get(seq);
         BoardForm form = new ModelMapper().map(data, BoardForm.class);
         form.setMode("update");
+        form.setBId(data.getBoard().getBId());
 
         return form;
     }

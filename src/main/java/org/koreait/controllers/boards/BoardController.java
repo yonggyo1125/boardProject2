@@ -50,10 +50,11 @@ public class BoardController implements ScriptExceptionProcess {
     @GetMapping("/update/{seq}")
     public String update(@PathVariable("seq") Long seq, Model model) {
         BoardForm form = infoService.getForm(seq);
+        System.out.println(form);
         commonProcess(form.getBId(), "update", model);
 
         model.addAttribute("boardForm", form);
-        
+
         return utils.tpl("board/update");
     }
 
