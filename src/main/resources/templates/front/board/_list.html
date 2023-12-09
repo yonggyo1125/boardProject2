@@ -4,6 +4,9 @@
     <h1>
         <a th:href="@{/board/list/{bId}(bId=${board.bId})}" th:text="${board.bName}"></a>
     </h1>
+
+    <a th:href="@{/board/write/{bId}(bId=${board.bId})}" th:text="#{글쓰기}"></a>
+
     <nav th:if="${categories != null && !categories.isEmpty()}">
         <a th:href="@{/board/list/{bId}(bId=${board.bId})}" th:text="#{전체}"></a>
         <a th:each="category : ${categories}" th:href="@{/board/list/{bId}(bId=${board.bId}, category=${category})}" th:text="${category}"></a>
