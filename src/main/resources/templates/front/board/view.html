@@ -7,8 +7,19 @@
     <div class="subject" th:text="*{subject}"></div>
     <div class="post_info">
         <div class="date" th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}"></div>
-        <div class="poster" th:text="*{'작성자 : ' + poster}"></div>
+        <div class="post_info">
+            [[#{작성자}]]:
+            <th:block th:text="*{poster}"></th:block>
+            <th:block th:if="*{member != null}"
+                      th:text="*{'(' + member.email + ')'}"></th:block>
+        </div>
     </div>
     <div class="content" th:utext="*{content}"></div>
+    <ul th:if="*{attachFiles != null && !attachFiles.isEmpty()}">
+        <li th:each="file, status : *{attachFiles}" th:object="${file}">
+            Download #<th:block th:text="${status.count}"></th:block> 
+            <a th:href="@{/file/download/{id}(id=*{id})}" th:text="*{fileName}"></a>
+        </li>
+    </ul>
 </main>
 </html>
