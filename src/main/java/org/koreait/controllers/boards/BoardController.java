@@ -40,6 +40,8 @@ public class BoardController implements ScriptExceptionProcess {
     private final BoardConfigInfoService configInfoService;
     private final FileInfoService fileInfoService;
 
+    private BoardData boardData;
+
     @GetMapping("/write/{bId}")
     public String write(@PathVariable("bId") String bId, @ModelAttribute  BoardForm form, Model model) {
         commonProcess(bId, "write", model);
@@ -103,6 +105,9 @@ public class BoardController implements ScriptExceptionProcess {
     public String view(@PathVariable("seq") Long seq, Model model) {
 
         BoardData data = infoService.get(seq);
+        boardData = data;
+
+        commonProcess(data.getBoard().getBId(), "view", model);
 
         model.addAttribute("boardData", data);
 
@@ -178,7 +183,9 @@ public class BoardController implements ScriptExceptionProcess {
         String pageTitle = bName;
         if (mode.equals("write")) pageTitle = bName + " 작성";
         else if (mode.equals("update")) pageTitle = bName + " 수정";
-        else if (mode.equals("view")) pageTitle = "게시글 제목";
+        else if (mode.equals("view") && boardData != null) {
+            pageTitle = boardData.getSubject() + "||" + bName;
+        }
 
 
         /* 글쓰기, 수정시 권한 체크 S */
