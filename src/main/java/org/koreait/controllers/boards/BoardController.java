@@ -3,6 +3,7 @@ package org.koreait.controllers.boards;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.koreait.commons.ListData;
 import org.koreait.commons.MemberUtil;
 import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
@@ -12,10 +13,7 @@ import org.koreait.commons.exceptions.AlertException;
 import org.koreait.entities.Board;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.FileInfo;
-import org.koreait.models.board.BoardDataNotFoundException;
-import org.koreait.models.board.BoardInfoService;
-import org.koreait.models.board.BoardSaveService;
-import org.koreait.models.board.RequiredPasswordCheckException;
+import org.koreait.models.board.*;
 import org.koreait.models.board.config.BoardConfigInfoService;
 import org.koreait.models.board.config.BoardNotFoundException;
 import org.koreait.models.file.FileInfoService;
@@ -38,6 +36,7 @@ public class BoardController implements ScriptExceptionProcess {
     private final MemberUtil memberUtil;
     private final BoardSaveService saveService;
     private final BoardInfoService infoService;
+    private final BoardDeleteService deleteService;
     private final BoardConfigInfoService configInfoService;
     private final FileInfoService fileInfoService;
 
@@ -117,14 +116,21 @@ public class BoardController implements ScriptExceptionProcess {
         }
 
         BoardData data = infoService.get(seq);
-
+        deleteService.delete(seq);
 
         return "redirect:/board/list/" + data.getBoard().getBId();
     }
 
     @GetMapping("/list/{bId}")
-    public String list(@PathVariable("bId") String bId, Model model) {
+    public String list(@PathVariable("bId") String bId, @ModelAttribute BoardDataSearch search, Model model) {
+        commonProcess(bId, "list", model);
 
+        search.setBId(bId);
+
+        ListData<BoardData> data = infoService.getList(search);
+        model.addAttribute("items", data.getContent());
+        model.addAttribute("pagination", data.getPagination());
+        
         return utils.tpl("board/list");
     }
 
