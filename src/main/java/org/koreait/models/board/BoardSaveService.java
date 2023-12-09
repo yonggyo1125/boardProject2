@@ -3,6 +3,7 @@ package org.koreait.models.board;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.MemberUtil;
 import org.koreait.controllers.boards.BoardForm;
+import org.koreait.controllers.boards.BoardFormValidator;
 import org.koreait.entities.Board;
 import org.koreait.entities.BoardData;
 import org.koreait.models.board.config.BoardConfigInfoService;
@@ -11,6 +12,7 @@ import org.koreait.repositories.FileInfoRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
 
 import java.util.Objects;
 
@@ -22,6 +24,16 @@ public class BoardSaveService {
     private final MemberUtil memberUtil;
     private final PasswordEncoder encoder;
     private final FileInfoRepository fileInfoRepository;
+    private final BoardFormValidator validator;
+
+    public void save(BoardForm form, Errors errors) {
+        validator.validate(form, errors);
+        if (errors.hasErrors()) {
+            return;
+        }
+
+        save(form);
+    }
 
     public void save(BoardForm form) {
         Long seq = form.getSeq();
@@ -60,7 +72,7 @@ public class BoardSaveService {
 
         boardDataRepository.saveAndFlush(data);
 
-        // 파일 업로드 완료 처리 
+        // 파일 업로드 완료 처리
         fileInfoRepository.processDone(gid);
     }
 }
