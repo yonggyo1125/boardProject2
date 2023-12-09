@@ -68,9 +68,17 @@ public class BoardInfoService {
         String bId = search.getBId(); // 게시판 아이디
         String sopt  = Objects.requireNonNullElse(search.getSopt(), "subject_content"); // 검색 옵션
         String skey = search.getSkey(); // 검색 키워드
+        String category = search.getCategory(); // 게시판 분류
 
         BooleanBuilder andBuilder = new BooleanBuilder();
         andBuilder.and(boardData.board.bId.eq(bId));
+
+        // 게시판 분류 검색 처리
+        if (StringUtils.hasText(category)) {
+            category = category.trim();
+            andBuilder.and(boardData.category.eq(category));
+        }
+
 
         // 키워드 검색 처리
         if (StringUtils.hasText(skey)) {
