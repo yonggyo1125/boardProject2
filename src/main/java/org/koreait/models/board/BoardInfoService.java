@@ -22,6 +22,7 @@ import org.koreait.entities.QBoardData;
 import org.koreait.models.file.FileInfoService;
 import org.koreait.repositories.BoardDataRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,6 +39,7 @@ public class BoardInfoService {
     private final EntityManager em;
     private final MemberUtil memberUtill;
     private final HttpSession session;
+    private final PasswordEncoder encoder;
 
     public BoardData get(Long seq) {
 
@@ -156,6 +158,15 @@ public class BoardInfoService {
                 return true;
             }
         }
+    }
 
+    public boolean checkGuestPassword(Long seq, String password) {
+        BoardData data = get(seq);
+        String guestPw = data.getGuestPw();
+        if (!StringUtils.hasText(guestPw)) {
+            return false;
+        }
+
+        return encoder.matches(password, guestPw);
     }
 }

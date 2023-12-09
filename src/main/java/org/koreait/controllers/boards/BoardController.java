@@ -119,6 +119,14 @@ public class BoardController implements ScriptExceptionProcess {
         return utils.tpl("board/list");
     }
 
+    @PostMapping("/guest/password")
+    public String guestPasswordCheck(String password, Model model) {
+
+
+        model.addAttribute("script", "parent.location.reload()");
+        return "common/_execute_script";
+    }
+
     private void commonProcess(String bId, String mode, Model model) {
 
         Board board = configInfoService.get(bId);
