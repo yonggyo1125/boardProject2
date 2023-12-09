@@ -6,8 +6,10 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ListData;
+import org.koreait.commons.Pagination;
 import org.koreait.commons.Utils;
 import org.koreait.controllers.boards.BoardDataSearch;
 import org.koreait.entities.BoardData;
@@ -27,6 +29,7 @@ public class BoardInfoService {
 
     private final BoardDataRepository boardDataRepository;
     private final FileInfoService fileInfoService;
+    private final HttpServletRequest request;
     private final EntityManager em;
 
     public BoardData get(Long seq) {
@@ -90,6 +93,16 @@ public class BoardInfoService {
                         new OrderSpecifier(Order.valueOf("DESC"),
                                 pathBuilder.get("createdAt")))
                 .fetch();
+
+        int total = (int)boardDataRepository.count(andBuilder);
+
+        Pagination pagination = new Pagination(page, total, 10, limit, request);
+
+        ListData<BoardData> data = new ListData<>();
+        data.setContent(items);
+        data.setPagination(pagination);
+
+        return data;
     }
 
 
