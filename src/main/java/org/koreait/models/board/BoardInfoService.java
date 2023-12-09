@@ -12,11 +12,13 @@ import org.koreait.commons.ListData;
 import org.koreait.commons.Pagination;
 import org.koreait.commons.Utils;
 import org.koreait.controllers.boards.BoardDataSearch;
+import org.koreait.controllers.boards.BoardForm;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.FileInfo;
 import org.koreait.entities.QBoardData;
 import org.koreait.models.file.FileInfoService;
 import org.koreait.repositories.BoardDataRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -41,6 +43,13 @@ public class BoardInfoService {
         return data;
     }
 
+    public BoardForm getForm(Long seq) {
+        BoardData data = get(seq);
+        BoardForm form = new ModelMapper().map(data, BoardForm.class);
+        form.setMode("update");
+
+        return form;
+    }
 
     public ListData<BoardData> getList(BoardDataSearch search) {
         QBoardData boardData = QBoardData.boardData;
@@ -97,6 +106,9 @@ public class BoardInfoService {
         int total = (int)boardDataRepository.count(andBuilder);
 
         Pagination pagination = new Pagination(page, total, 10, limit, request);
+
+        // 파일 정보 추가
+        items.stream().forEach(this::addFileInfo);
 
         ListData<BoardData> data = new ListData<>();
         data.setContent(items);
