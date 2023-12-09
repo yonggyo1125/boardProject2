@@ -139,16 +139,18 @@ public class BoardInfoService {
         }
 
         BoardData data = get(seq);
+        System.out.println("check : " + data.getMember() == null);
         if (data.getMember() != null) {
+
          // 회원 등록 게시물이만 직접 작성한 게시글인 경우
             Member boardMember = data.getMember();
             Member member = memberUtill.getMember();
-
-            return memberUtill.isLogin() && boardMember.getUserNo() == member.getUserNo();
+            return memberUtill.isLogin() && boardMember.getUserNo().longValue() == member.getUserNo().longValue();
         } else { // 비회원 게시글
             // 세션에 chk_게시글번호 항목이 있으면 비번 검증 완료
             String key = "chk_" + seq;
             if (session.getAttribute(key) == null) { // 비회원 비밀번호 검증 X -> 검증 화면으로 이동
+                session.setAttribute("guest_seq", seq);
                 throw new RequiredPasswordCheckException();
             } else { // 비회원 게시글 검증 성공시
                 return true;
