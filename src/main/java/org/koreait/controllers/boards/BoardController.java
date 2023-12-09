@@ -102,14 +102,21 @@ public class BoardController implements ScriptExceptionProcess {
     }
 
     @GetMapping("/view/{seq}")
-    public String view(@PathVariable("seq") Long seq, Model model) {
+    public String view(@PathVariable("seq") Long seq,
+                       @ModelAttribute  BoardDataSearch search, Model model) {
 
         BoardData data = infoService.get(seq);
         boardData = data;
 
-        commonProcess(data.getBoard().getBId(), "view", model);
+        String bId = data.getBoard().getBId();
+        commonProcess(bId, "view", model);
+
+        search.setBId(bId);
+        ListData<BoardData> listData = infoService.getList(search);
 
         model.addAttribute("boardData", data);
+        model.addAttribute("items", listData.getContent());
+        model.addAttribute("pagination", listData.getPagination());
 
         return utils.tpl("board/view");
     }
