@@ -12,6 +12,7 @@ import org.koreait.entities.BoardData;
 import org.koreait.entities.FileInfo;
 import org.koreait.models.board.BoardInfoService;
 import org.koreait.models.board.BoardSaveService;
+import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.models.board.config.BoardConfigInfoService;
 import org.koreait.models.board.config.BoardNotFoundException;
 import org.koreait.models.file.FileInfoService;
@@ -170,5 +171,11 @@ public class BoardController implements ScriptExceptionProcess {
         model.addAttribute("addCommonScript", addCommonScript);
         model.addAttribute("addScript", addScript);
         model.addAttribute("pageTitle", pageTitle);
+    }
+
+    @ExceptionHandler(RequiredPasswordCheckException.class)
+    public String guestPassword() {
+
+        return utils.tpl("board/password");
     }
 }
