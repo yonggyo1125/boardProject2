@@ -4,9 +4,11 @@ import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ListData;
+import org.koreait.commons.MemberUtil;
 import org.koreait.commons.Pagination;
 import org.koreait.commons.Utils;
 import org.koreait.commons.constants.BoardAuthority;
+import org.koreait.commons.exceptions.AuthorizationException;
 import org.koreait.controllers.admins.BoardConfigForm;
 import org.koreait.controllers.admins.BoardSearch;
 import org.koreait.entities.Board;
@@ -31,9 +33,31 @@ public class BoardConfigInfoService {
 
     private final BoardRepository repository;
     private final HttpServletRequest request;
+    private final MemberUtil memberUtil;
 
     public Board get(String bId) {
         Board data = repository.findById(bId).orElseThrow(BoardNotFoundException::new);
+
+        return data;
+    }
+
+    public Board get(String bId, boolean checkAuthority) {
+        Board data = get(bId);
+        if (!checkAuthority) {
+            return data;
+        }
+
+        // 글쓰기 권한 체크
+        BoardAuthority authority = data.getAuthority();
+        if (authority != BoardAuthority.ALL) {
+            if (!memberUtil.isLogin()) {
+                throw new AuthorizationException();
+            }
+
+            if (authority == BoardAuthority.ADMIN) {
+                throw new AuthorizationException();
+            }
+        }
 
         return data;
     }
