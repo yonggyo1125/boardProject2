@@ -45,6 +45,7 @@ public class CommentInfoService {
                 .orderBy(new OrderSpecifier(Order.ASC, pathBuilder.get("createdAt")))
                 .fetch();
 
+        return items;
     }
 
 }
