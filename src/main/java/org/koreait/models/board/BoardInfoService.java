@@ -21,12 +21,18 @@ import org.koreait.models.file.FileInfoService;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.BoardViewRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+
+import static org.springframework.data.domain.Sort.Order.desc;
 
 @Service
 @RequiredArgsConstructor
@@ -222,5 +228,15 @@ public class BoardInfoService {
         }
 
         return encoder.matches(password, guestPw);
+    }
+
+    public List<BoardData> getList(String bId, int num) {
+
+        QBoardData boardData = QBoardData.boardData;
+        num = Utils.getNumber(num, 10);
+        Pageable pageable = PageRequest.of(0, num, Sort.by(desc("createdAt")));
+        Page<BoardData> data = boardDataRepository.findAll(boardData.board.bId.eq(bId), pageable);
+
+        return data.getContent();
     }
 }
