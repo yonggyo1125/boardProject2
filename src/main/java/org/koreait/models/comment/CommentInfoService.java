@@ -107,7 +107,7 @@ public class CommentInfoService {
             return true;
         }
 
-        // 회원 댓글이면 직접 작성한 댓글만 노출 
+        // 회원 댓글이면 직접 작성한 댓글만 노출
         if (memberUtil.isLogin() && commentMember != null
                 && commentMember.getUserNo().longValue() == memberUtil.getMember().getUserNo().longValue()) {
             return true;

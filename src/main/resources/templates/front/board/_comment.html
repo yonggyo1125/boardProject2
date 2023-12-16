@@ -33,7 +33,10 @@
                      th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}"></div>
             </div>
             <div class="content_box" th:utext="*{@utils.nl2br(content)}"></div>
-
+            <div th:if="${@commentInfoService.isEditable(comment)}" class="btns">
+                <a th:href="@{/comment/update/{seq}(seq=*{seq})}" th:text="#{수정}"></a>
+                <a th:href="@{/comment/delete/{seq}(seq=*{seq})}" th:text="#{삭제}" onclick="return confirm('정말 삭제하시겠습니까?')"></a>
+            </div>
         </li>
     </ul>
 
