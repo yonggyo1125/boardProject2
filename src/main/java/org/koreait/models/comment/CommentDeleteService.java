@@ -18,6 +18,10 @@ public class CommentDeleteService {
 
         repository.delete(commentData);
         repository.flush();
+        
+        // 총 댓글 수 업데이트
+        Long boardDataSeq = boardData.getSeq();
+        infoService.updateCommentCnt(boardDataSeq);
 
         return boardData;
     }
