@@ -1,5 +1,6 @@
 package org.koreait.controllers.comments;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
@@ -7,6 +8,7 @@ import org.koreait.commons.exceptions.AlertException;
 import org.koreait.entities.BoardData;
 import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.models.comment.CommentDeleteService;
+import org.koreait.models.comment.CommentInfoService;
 import org.koreait.models.comment.CommentSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +29,12 @@ public class CommentController implements ScriptExceptionProcess {
 
     private final CommentSaveService saveService;
     private final CommentDeleteService deleteService;
+    private final CommentInfoService infoService;
+
     private final Utils utils;
 
     @PostMapping("/save")
-    public String save(CommentForm form, Errors errors, Model model) {
+    public String save(@Valid CommentForm form, Errors errors, Model model) {
 
         saveService.save(form, errors);
 

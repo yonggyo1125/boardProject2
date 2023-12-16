@@ -82,13 +82,14 @@ public class CommentInfoService {
         if (commentMember == null) { // 비회원 작성
             String key = "chk_comment_" + seq;
             if (session.getAttribute(key) == null) { // 비회원 비밀번호 확인 전
+                session.setAttribute("comment_seq", seq);
                 throw new RequiredPasswordCheckException();
             }
             
         } else { // 로그인 상태 작성
             if (!memberUtil.isLogin()
                     || commentMember.getUserNo().longValue() != memberUtil.getMember().getUserNo().longValue()) {
-                throw new AlertBackException(Utils.getMessage("작성한_댓글만_삭제가능합니다.", "error"));
+                throw new AlertBackException(Utils.getMessage("작성한_댓글만_수정_삭제_가능합니다.", "error"));
             }
         }
     }
