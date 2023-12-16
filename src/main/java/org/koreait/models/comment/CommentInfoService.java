@@ -14,6 +14,7 @@ import org.koreait.entities.BoardData;
 import org.koreait.entities.CommentData;
 import org.koreait.entities.Member;
 import org.koreait.entities.QCommentData;
+import org.koreait.models.board.BoardDataNotFoundException;
 import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.CommentDataRepository;
@@ -64,10 +65,8 @@ public class CommentInfoService {
      * @param seq
      */
     public void updateCommentCnt(Long seq) {
-        CommentData comment = get(seq);
-        BoardData boardData = comment.getBoardData();
-        Long boardDataSeq = boardData.getSeq();
-        boardData.setCommentCnt(commentDataRepository.getTotal(boardDataSeq));
+        BoardData boardData = boardDataRepository.findById(seq).orElseThrow(BoardDataNotFoundException::new);
+        boardData.setCommentCnt(commentDataRepository.getTotal(seq));
 
         boardDataRepository.flush();
     }

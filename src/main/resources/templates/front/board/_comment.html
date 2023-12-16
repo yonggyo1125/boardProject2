@@ -6,7 +6,7 @@
         <input type="hidden" name="boardDataSeq" th:value="*{seq}">
         <div class="comment_box">
             <div class="commenter_info">
-                <input sec:authorize="isAuthenticated()" type="text" name="poster" th:value="${session.member.userNm}" th:placeholder="#{작성자}">
+                <input sec:authorize="isAuthenticated()" type="text" name="poster"  th:placeholder="#{작성자}" th:value="${session.loginMember.userNm}">
                 <th:block sec:authorize="isAnonymous()">
                     <input type="text" name="poster" th:placeholder="#{작성자}">
                     <input type="password" name="guestPw" th:placeholder="#{비밀번호}">
@@ -21,7 +21,7 @@
         <!-- comment_box -->
     </form>
 
-    <ul th:if="*{comments != null && !comments.isEmpty()}">
+    <ul id="comments" th:if="*{comments != null && !comments.isEmpty()}">
         <li th:each="comment : *{comments}" th:object="${comment}">
             <div class="commenter_info">
                 <div class="commenter">
