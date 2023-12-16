@@ -23,6 +23,16 @@
 
     <ul th:if="*{comments != null && !comments.isEmpty()}">
         <li th:each="comment : *{comments}" th:object="${comment}">
+            <div class="commenter_info">
+                <div class="commenter">
+                    <th:block th:text="*{poster}"></th:block>
+                    <th:block th:if="*{member != null}"
+                              th:text="*{'(' + member.email + ')'}"></th:block>
+                </div>
+                <div class="comment_date"
+                     th:text="*{#temporals.format(createdAt, 'yyyy.MM.dd HH:mm')}"></div>
+            </div>
+            <div class="content_box" th:utext="*{@utils.nl2br(content)}"></div>
 
         </li>
     </ul>

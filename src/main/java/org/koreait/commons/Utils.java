@@ -121,7 +121,10 @@ public class Utils {
         } catch (Exception e) {
             return null;
         }
+    }
 
-
+    public String nl2br(String str) {
+       return str.replaceAll("\\r", "")
+                .replaceAll("\\n", "<br>");
     }
 }
