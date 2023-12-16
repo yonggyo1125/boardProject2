@@ -18,6 +18,7 @@ import org.koreait.models.board.BoardDataNotFoundException;
 import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.CommentDataRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class CommentInfoService {
     private final MemberUtil memberUtil;
     private final EntityManager em;
     private final HttpSession session;
+    private final PasswordEncoder encoder;
 
     public CommentData get(Long seq) {
         CommentData comment = commentDataRepository.findById(seq).orElseThrow(CommentNotFoundException::new);
@@ -113,5 +115,18 @@ public class CommentInfoService {
         }
 
         return false;
+    }
+
+    /**
+     * 비회원 댓글 비밀번호 확인
+     *
+     * @param seq
+     * @param password
+     * @return
+     */
+    public boolean checkGuestPassword(Long seq, String password) {
+        CommentData comment = get(seq);
+        
+        return encoder.matches(password, comment.getGuestPw());
     }
 }
