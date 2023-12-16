@@ -5,10 +5,16 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.koreait.commons.MemberUtil;
+import org.koreait.commons.Utils;
+import org.koreait.commons.exceptions.AlertBackException;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.CommentData;
+import org.koreait.entities.Member;
 import org.koreait.entities.QCommentData;
+import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.CommentDataRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +27,9 @@ public class CommentInfoService {
 
     private final CommentDataRepository commentDataRepository;
     private final BoardDataRepository boardDataRepository;
-
+    private final MemberUtil memberUtil;
     private final EntityManager em;
+    private final HttpSession session;
 
     public CommentData get(Long seq) {
         CommentData comment = commentDataRepository.findById(seq).orElseThrow(CommentNotFoundException::new);
@@ -63,6 +70,27 @@ public class CommentInfoService {
         boardData.setCommentCnt(commentDataRepository.getTotal(boardDataSeq));
 
         boardDataRepository.flush();
+    }
+
+    public void isMine(Long seq) {
+        if (memberUtil.isAdmin()) {
+            return;
+        }
+
+        CommentData data = get(seq);
+        Member commentMember = data.getMember();
+        if (commentMember == null) { // 비회원 작성
+            String key = "chk_comment_" + seq;
+            if (session.getAttribute(key) == null) { // 비회원 비밀번호 확인 전
+                throw new RequiredPasswordCheckException();
+            }
+            
+        } else { // 로그인 상태 작성
+            if (!memberUtil.isLogin()
+                    || commentMember.getUserNo().longValue() != memberUtil.getMember().getUserNo().longValue()) {
+                throw new AlertBackException(Utils.getMessage("작성한_댓글만_삭제가능합니다.", "error"));
+            }
+        }
     }
 
 }

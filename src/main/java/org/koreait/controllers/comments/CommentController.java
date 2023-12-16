@@ -5,11 +5,13 @@ import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
 import org.koreait.commons.exceptions.AlertException;
 import org.koreait.entities.BoardData;
+import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.models.comment.CommentDeleteService;
 import org.koreait.models.comment.CommentSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,5 +54,10 @@ public class CommentController implements ScriptExceptionProcess {
         BoardData boardData = deleteService.delete(seq);
 
         return "redirect:/board/view/" + boardData.getSeq() + "#comments";
+    }
+
+    @ExceptionHandler(RequiredPasswordCheckException.class)
+    public String guestPassword() {
+        return utils.tpl("board/password");
     }
 }
