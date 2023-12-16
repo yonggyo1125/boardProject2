@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.koreait.commons.ScriptExceptionProcess;
 import org.koreait.commons.Utils;
 import org.koreait.commons.exceptions.AlertException;
+import org.koreait.entities.BoardData;
 import org.koreait.models.comment.CommentDeleteService;
 import org.koreait.models.comment.CommentSaveService;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,8 @@ public class CommentController implements ScriptExceptionProcess {
     @RequestMapping("/delete/{seq}")
     public String delete(@PathVariable("seq") Long seq) {
 
-        return "redirect:/board/view/게시글번호";
+        BoardData boardData = deleteService.delete(seq);
+
+        return "redirect:/board/view/" + boardData.getSeq() + "#comments";
     }
 }
