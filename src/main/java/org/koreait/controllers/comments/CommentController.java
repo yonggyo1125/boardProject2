@@ -13,10 +13,7 @@ import org.koreait.models.comment.CommentSaveService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,12 @@ public class CommentController implements ScriptExceptionProcess {
     private final CommentInfoService infoService;
 
     private final Utils utils;
+
+    @GetMapping("/update/{seq}")
+    public String update(@PathVariable("seq") Long seq, Model model) {
+
+        return utils.tpl("board/comment_update");
+    }
 
     @PostMapping("/save")
     public String save(@Valid CommentForm form, Errors errors, Model model) {

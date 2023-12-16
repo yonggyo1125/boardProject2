@@ -126,7 +126,7 @@ public class CommentInfoService {
      */
     public boolean checkGuestPassword(Long seq, String password) {
         CommentData comment = get(seq);
-        
+
         return encoder.matches(password, comment.getGuestPw());
     }
 }
