@@ -6,8 +6,10 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.koreait.entities.BoardData;
 import org.koreait.entities.CommentData;
 import org.koreait.entities.QCommentData;
+import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.CommentDataRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class CommentInfoService {
 
     private final CommentDataRepository commentDataRepository;
+    private final BoardDataRepository boardDataRepository;
 
     private final EntityManager em;
 
@@ -46,6 +49,20 @@ public class CommentInfoService {
                 .fetch();
 
         return items;
+    }
+
+    /**
+     * 댓글 수 업데이트
+     *
+     * @param seq
+     */
+    public void updateCommentCnt(Long seq) {
+        CommentData comment = get(seq);
+        BoardData boardData = comment.getBoardData();
+        Long boardDataSeq = boardData.getSeq();
+        boardData.setCommentCnt(commentDataRepository.getTotal(boardDataSeq));
+
+        boardDataRepository.flush();
     }
 
 }
