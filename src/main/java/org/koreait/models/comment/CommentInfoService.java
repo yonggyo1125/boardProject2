@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.koreait.commons.MemberUtil;
 import org.koreait.commons.Utils;
 import org.koreait.commons.exceptions.AlertBackException;
+import org.koreait.controllers.comments.CommentForm;
 import org.koreait.entities.BoardData;
 import org.koreait.entities.CommentData;
 import org.koreait.entities.Member;
@@ -18,6 +19,7 @@ import org.koreait.models.board.BoardDataNotFoundException;
 import org.koreait.models.board.RequiredPasswordCheckException;
 import org.koreait.repositories.BoardDataRepository;
 import org.koreait.repositories.CommentDataRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,14 @@ public class CommentInfoService {
         CommentData comment = commentDataRepository.findById(seq).orElseThrow(CommentNotFoundException::new);
 
         return comment;
+    }
+
+    public CommentForm getForm(Long seq) {
+        CommentData comment = get(seq);
+        CommentForm form = new ModelMapper().map(comment, CommentForm.class);
+        form.setBoardDataSeq(comment.getBoardData().getSeq());
+
+        return form;
     }
 
     /**

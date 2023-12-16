@@ -3,6 +3,7 @@ package org.koreait.controllers.comments;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.koreait.entities.Member;
 
 @Data
 public class CommentForm {
@@ -17,5 +18,7 @@ public class CommentForm {
 
     @NotBlank
     private String content;
+
+    private Member member;
 
 }

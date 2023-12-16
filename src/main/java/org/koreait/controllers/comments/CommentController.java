@@ -33,6 +33,12 @@ public class CommentController implements ScriptExceptionProcess {
     @GetMapping("/update/{seq}")
     public String update(@PathVariable("seq") Long seq, Model model) {
 
+        infoService.isMine(seq);
+
+        CommentForm form = infoService.getForm(seq);
+        model.addAttribute("commentForm", form);
+        model.addAttribute("mode", "update");
+
         return utils.tpl("board/comment_update");
     }
 

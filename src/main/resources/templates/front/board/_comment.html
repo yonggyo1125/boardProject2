@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="comment" th:object="${boardData}">
 
+    <th:block th:replace="~{front/board/_comment_form::form}"></th:block>
 
     <ul id="comments" th:if="*{comments != null && !comments.isEmpty()}">
         <li th:each="comment : *{comments}" th:object="${comment}">
