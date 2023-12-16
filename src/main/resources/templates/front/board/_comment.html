@@ -3,7 +3,7 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="comment" th:object="${boardData}">
     <form id="frmComment" name="frmComment" method="post" th:action="@{/comment/save}" target="ifrmProcess" autocomplete="off">
-        <input type="hidden" name="boardDataSeq" th:field="*{seq}">
+        <input type="hidden" name="boardDataSeq" th:value="*{seq}">
         <div class="comment_box">
             <div class="commenter_info">
                 <input sec:authorize="isAuthenticated()" type="text" name="poster" th:value="${session.member.userNm}" th:placeholder="#{작성자}">
@@ -20,5 +20,12 @@
         </div>
         <!-- comment_box -->
     </form>
+
+    <ul th:if="*{comments != null && !comments.isEmpty()}">
+        <li th:each="comment : *{comments}" th:object="${comment}">
+
+        </li>
+    </ul>
+
 </th:block>
 </html>
