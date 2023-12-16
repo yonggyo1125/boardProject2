@@ -49,7 +49,9 @@ public class BoardData extends Base {
     private String content;
 
     private boolean notice; // 공지사항 여부
-
+    
+    private int viewCnt; // 조회수
+    
     @Transient
     private List<FileInfo> editorImages;
 
