@@ -36,6 +36,9 @@ public class CommentController implements ScriptExceptionProcess {
         infoService.isMine(seq);
 
         CommentForm form = infoService.getForm(seq);
+        BoardData boardData = form.getBoardData();
+
+        model.addAttribute("boardData", boardData);
         model.addAttribute("commentForm", form);
         model.addAttribute("mode", "update");
 
@@ -56,9 +59,16 @@ public class CommentController implements ScriptExceptionProcess {
         }
 
 
+        Long seq = form.getSeq();
         // 댓글 작성 완료 시에 부모창을 새로고침 -> 새로운 목록 갱신
-        model.addAttribute("script", "parent.location.reload();");
-        return "common/_execute_script";
+        if (seq == null) {
+            model.addAttribute("script", "parent.location.reload();");
+            return "common/_execute_script";
+        } else {
+            // 댓글 수정 시 -> 게시글 보기 페이지 이동 -> 해당 댓글 위치로 이동
+
+            return "redirect:/board/view/" + form.getBoardDataSeq() + "#comment_" + seq;
+        }
     }
 
     @RequestMapping("/delete/{seq}")
