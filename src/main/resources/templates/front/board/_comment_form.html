@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <th:block th:fragment="form" th:object="${boardData}">
-        <form id="frmComment" name="frmComment" method="post" th:action="@{/comment/save}" target="ifrmProcess" autocomplete="off">
+        <form id="frmComment" name="frmComment" method="post" th:action="@{/comment/save}" th:target="${mode == 'update' ? '_self' : 'ifrmProcess'}" autocomplete="off">
             <input th:if="${mode == 'update'}" type="hidden" name="seq"
                    th:value="${commentForm.seq}">
             <input type="hidden" name="boardDataSeq" th:value="*{seq}">

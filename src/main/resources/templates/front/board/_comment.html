@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="comment" th:object="${boardData}">
-
+    <div>Total :
+        <th:block
+                th:text="*{commentCnt < 1000 ? commentCnt : #numbers.formatInteger(commentCnt, 3, 'COMMA')}"></th:block>
+    </div>
     <th:block th:replace="~{front/board/_comment_form::form}"></th:block>
 
     <ul id="comments" th:if="*{comments != null && !comments.isEmpty()}">
-        <li th:each="comment : *{comments}" th:object="${comment}">
+        <li th:each="comment : *{comments}" th:object="${comment}" th:id="*{'comment_' + seq}">
             <div class="commenter_info">
                 <div class="commenter">
                     <th:block th:text="*{poster}"></th:block>
